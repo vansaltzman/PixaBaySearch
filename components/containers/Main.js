@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as actions from '../../actions/actions'
 import { View, Text } from 'react-native';
+import PhotoListContainer from '../containers/PhotoList'
+
 // import PhotoDetail from './PhotoDetail';
 // import PhotoList from './PhotoList';
 // import Search from './Search';
@@ -10,13 +12,12 @@ import { View, Text } from 'react-native';
 class Main extends Component {
   constructor(props) {
     super(props);
-    this.state = {  }
   }
   render() { 
     if (!this.props.list.selected) {
       return ( 
-        // <PhotoListContainer />
         <View>
+          <PhotoListContainer />
         </View>
       )
     } else {

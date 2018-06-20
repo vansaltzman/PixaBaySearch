@@ -244,6 +244,7 @@ const DEFAULT_STATE = {
     }
 ],
   selectedPhoto: null, // Should be a photoObj or null
+  loading: false,
   currentPage: null,
   scrollPos: null, // Not sure if needed using FlatList
 }
