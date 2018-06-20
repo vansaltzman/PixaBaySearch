@@ -3,18 +3,34 @@ import { getPhotosByKeyword, getNextPage } from '../utilities/pixabay'
 
 // Perform Search
 export function searchByKeyword(keyword) {
-  return (dispatch => {
-    getPhotosByKeyword(keyword)
+  return (dispatch) => {
+    dispatch(toggleLoading(true))
+    return getPhotosByKeyword(keyword)
     .then(res => {
-      dispatch(searchByKeywordAction(res.data))
+      console.log('got photos')
+      dispatch(searchByKeywordAction(res.data.hits))
+      dispatch(toggleLoading(false))
     })
-  })
+    .catch(() => {
+      toggleLoading(false)
+    })
+  }
 }
 
 function searchByKeywordAction(photos) {
+  console.log('photos ------> ', photos)
   return {
     type: actionTypes.SEARCH_BY_KEYWORD,
     photos
+  }
+}
+
+//Toggle Loading
+function toggleLoading(boolean) {
+  console.log('loading = ' + boolean)
+  return {
+    type: actionTypes.TOGGLE_LOADING,
+    boolean
   }
 }
 

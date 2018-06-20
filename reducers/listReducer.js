@@ -1,4 +1,4 @@
-import * as actionTypes from '../actions/types'
+import actionTypes from '../actions/types.js'
 
 const DEFAULT_STATE = {
   photos: [
@@ -251,12 +251,15 @@ const DEFAULT_STATE = {
 
 export default function(state = DEFAULT_STATE, action) {
   switch(action.type) {
+    case actionTypes.TOGGLE_LOADING:
+      return {...state, loading: action.boolean || !state.loading}
     case actionTypes.SEARCH_BY_KEYWORD:
-      return {...state, photos: photos, currentPage: 1, selectedPhoto: null}
+        console.log('action.photos ------> ', action.photos)
+      return {...state, photos: action.photos, currentPage: 1, selectedPhoto: null}
     case actionTypes.LOAD_MORE_PHOTOS:
-      return {...state, photos: state.photos.concat(photos), currentPage: 2}
+      return {...state, photos: state.photos.slice().concat(action.photos), currentPage: action.currentPage + 1}
     case actionTypes.SHOW_DETAIL:
-      return {...state, selectedPhoto: photoObject}
+      return {...state, selectedPhoto: action.photoObject}
     case actionTypes.HIDE_DETAIL:
       return {...state, selectedPhoto: null}
     default:

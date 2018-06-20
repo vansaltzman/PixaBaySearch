@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 import * as actions from '../../actions/actions'
 import { View, Text } from 'react-native';
 import PhotoListContainer from '../containers/PhotoList'
+import Search from './Search'
 
 // import PhotoDetail from './PhotoDetail';
 // import PhotoList from './PhotoList';
@@ -16,9 +17,7 @@ class Main extends Component {
   render() { 
     if (!this.props.list.selected) {
       return ( 
-        <View>
           <PhotoListContainer />
-        </View>
       )
     } else {
       return (
@@ -37,8 +36,8 @@ function mapStateToProps(state) {
   }
 }
 
-function mapDispatchToProps(dispatch) {
+function matchDispatchToProps(dispatch) {
   return bindActionCreators(actions, dispatch);
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Main);
+export default connect(mapStateToProps, matchDispatchToProps)(Main);

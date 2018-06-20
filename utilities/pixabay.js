@@ -4,7 +4,7 @@ import { PIXABAY_KEY } from './config.js'
 export const getPhotosByKeyword = function(keyword) {
   return axios.get('https://pixabay.com/api/', {params: {
     q: keyword,
-    per_page: 10,
+    per_page: 100,
     page: 1,
     key: PIXABAY_KEY,
   }})
