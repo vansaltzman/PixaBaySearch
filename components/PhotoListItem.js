@@ -1,13 +1,15 @@
 import React from 'react';
-import { Image, Text } from 'react-native'
+import { Image, Text, TouchableHighlight } from 'react-native'
 
-const PhotoListItem = ({ preview, photoStyle, showDetailHandler }) => {
+const PhotoListItem = ({ photoObj, photoStyle, showDetailHandler }) => {
   return(
+    <TouchableHighlight underlayColor={'white'} onPress={()=> showDetailHandler(photoObj)}>
       <Image 
         style={photoStyle}
-        source={{uri: preview}}
+        source={{uri: photoObj.previewURL}}
         resizeMode="cover"
       />
+    </TouchableHighlight>
   )
 }
 

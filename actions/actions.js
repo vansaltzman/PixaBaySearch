@@ -3,43 +3,57 @@ import { getPhotosByKeyword, getNextPage } from '../utilities/pixabay'
 
 // Perform Search
 export function searchByKeyword(keyword) {
-  return (dispatch) => {
-    dispatch(toggleLoading(true))
-    return getPhotosByKeyword(keyword)
-    .then(res => {
-      console.log('got photos')
-      dispatch(searchByKeywordAction(res.data.hits))
-      dispatch(toggleLoading(false))
-    })
-    .catch(() => {
-      toggleLoading(false)
-    })
+  if (keyword && keyword !== '') {
+    return (dispatch) => {
+      dispatch(toggleLoadingSearch(true))
+      return getPhotosByKeyword(keyword)
+      .then(res => {
+        dispatch(searchByKeywordAction(res.data.hits, keyword))
+        dispatch(toggleLoadingSearch(false))
+      })
+      .catch(err => {
+        console.log('Error with search! ', err)
+        toggleLoadingSearch(false)
+      })
+    }
   }
 }
 
-function searchByKeywordAction(photos) {
-  console.log('photos ------> ', photos)
+function searchByKeywordAction(photos, keyword) {
   return {
     type: actionTypes.SEARCH_BY_KEYWORD,
-    photos
+    photos,
+    keyword
   }
 }
 
 //Toggle Loading
-function toggleLoading(boolean) {
-  console.log('loading = ' + boolean)
+function toggleLoadingPhotos(boolean) {
   return {
-    type: actionTypes.TOGGLE_LOADING,
+    type: actionTypes.TOGGLE_LOADING_PHOTOS,
+    boolean
+  }
+}
+
+function toggleLoadingSearch(boolean) {
+  return {
+    type: actionTypes.TOGGLE_LOADING_SEARCH,
     boolean
   }
 }
 
 // Load More Photos
-export function loadMorePhotos(keyword, nextPage) {
+export function loadMorePhotos(keyword, currentPage) {
   return (dispatch => {
-    getNextPage(keyword, nextPage)
+    toggleLoadingPhotos(true)
+    getNextPage(keyword, currentPage + 1)
     .then(res => {
+      toggleLoadingPhotos(false)
       dispatch(loadMorePhotosAction(res.data))
+    })
+    .catch(err => {
+      toggleLoadingPhotos(false)
+      console.log(err)
     })
   })
 }
@@ -68,4 +82,11 @@ export function hideDetail() {
 
 // Save Scroll Position ???
 
-// Change Orientation ??? 
+// Change Orientation
+export function setLayout(e) {
+  let layoutObj = e.nativeEvent.layout
+  return {
+    type: actionTypes.SET_LAYOUT,
+    newLayout: layoutObj
+  }
+}

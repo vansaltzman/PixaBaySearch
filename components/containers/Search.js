@@ -17,12 +17,13 @@ export default class SearchContainer extends Component {
   render() { 
     return ( 
       <SearchBar 
-        placeholder="Search By Keyword"
+        placeholder={this.props.keyword || "Search By Keyword"}
         value={this.state.input}
+        showLoadingIcon={this.props.loading}
         lightTheme
         onChangeText={this.updateInput}
         searchIcon={{ size: 24 }}
-        returnKeyType='Search'
+        returnKeyType='go'
         onSubmitEditing={()=> this.props.searchHandler(this.state.input)}
         clearButtonMode="while-editing"
       />

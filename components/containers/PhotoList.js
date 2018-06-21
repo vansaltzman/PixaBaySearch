@@ -4,11 +4,9 @@ import { connect } from 'react-redux';
 import * as actions from '../../actions/actions';
 import { FlatList, Text, View, Image, StyleSheet, Dimensions } from 'react-native';
 import { List, Tile, ActivityIndicator } from 'react-native-elements';
-import listReducer from '../../reducers/listReducer';
+import { throttle } from 'lodash'
 import PhotoListItem from '../PhotoListItem'
 import Search from './Search';
-
-var {height, width} = Dimensions.get('window');
 
 class PhotoListContainer extends Component {
   constructor(props) {
@@ -16,45 +14,65 @@ class PhotoListContainer extends Component {
   }
 
   render() { 
+    const styles = StyleSheet.create({
+      photo:{
+        alignSelf: 'center',
+        height: 66,
+        width: this.props.layout ? this.props.layout.width/3 * 1 : 0,
+        marginLeft: 3
+      },
+      list:{
+        alignContent: 'center',
+        width: this.props.layout.width,
+        minHeight: this.props.layout.height,
+        borderTopWidth: 0,
+        borderBottomWidth: 0,
+      }
+    })
+
     return ( 
-      <List>
-        <FlatList
-          contentContainerStyle={styles.list}
-          ListHeaderComponent={() => <Search searchHandler={this.props.searchByKeyword}/>}
-          ListFooterComponent={this.props.loading && <Text> Loading... </Text>}
-          numColumns={3}
-          data={this.props.photos.length > 0 ? this.props.photos.map(photo => (
-            {key: photo.id, preview: photo.previewURL}
-          )) : []}
-          renderItem={({ item }) => (
-              <PhotoListItem photoStyle={styles.photo} preview={item.preview} />
-          )}
-          ItemSeparatorComponent={() => (
-            <View style={{width: '100%', height: 3, }} />
-          )}
-        />
-      </List>
+      <View
+        onLayout={this.props.setLayout}
+      > 
+          <FlatList
+            contentContainerStyle={styles.list}
+            numColumns={3}
+            ListHeaderComponent={() => (
+              <Search 
+                keyword={this.props.keyword} 
+                loading={this.props.loadingSearch} 
+                searchHandler={this.props.searchByKeyword}
+              />
+            )}
+            ListFooterComponent={this.props.loadingPhotos && <Text> Loading... </Text>}
+            data={this.props.photos.length > 0 ? this.props.photos.map(photo => (
+              {key: photo.id, photoObj: photo}
+            )) : []}
+            renderItem={({ item }) => (
+              <PhotoListItem photoStyle={styles.photo} photoObj={item.photoObj} showDetailHandler={this.props.showDetail} />
+            )}
+            ItemSeparatorComponent={() => (
+              <View style={{width: '100%', height: 3, }} />
+            )}
+            onEndReached={()=> {
+                let throttledLoad = throttle(this.props.loadMorePhotos, 10000)
+                throttledLoad(this.props.keyword, this.props.page)
+            }}
+            onEndReachedThreshold={0.95}
+          />
+      </View>
      )
   }
 }
 
-const styles = StyleSheet.create({
-  photo:{
-    alignSelf: 'center',
-    height: 66,
-    width: width/3 * 0.97,
-    marginLeft: 3
-  },
-  list:{
-    borderTopWidth: 0,
-    borderBottomWidth: 0,
-  }
-})
-
 function mapStateToProps(state) {
   return {
     photos: state.list.photos,
-    loading: state.list.loading
+    loadingPhotos: state.list.loadingPhotos,
+    loadingSearch: state.list.loadingSearch,
+    page: state.list.currentPage,
+    keyword: state.list.keyword,
+    layout: state.list.layout,
   }
 }
 
