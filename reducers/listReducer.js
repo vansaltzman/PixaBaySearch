@@ -8,7 +8,7 @@ const DEFAULT_STATE = {
   currentPage: null,
   scrollPos: null, // Not sure if needed using FlatList
   keyword: null,
-  layout: {x: 0, y: 0, width: 100, height: 100},
+  layout: {x: 0, y: 0, width: 100, height: 100}, // Arbitrary values - set on PhotoList render
 }
 
 export default function(state = DEFAULT_STATE, action) {

@@ -4,8 +4,7 @@ import { Component } from 'react';
 import { Provider } from 'react-redux';
 import rootReducer from './reducers/rootReducer'
 import Main from './components/containers/Main';
-import { StyleSheet, Text, View } from 'react-native';
-import { applyMiddleware, createStore, compose } from 'redux';
+import { applyMiddleware, createStore } from 'redux';
 
 const store = createStore(rootReducer, applyMiddleware(thunk))
 

@@ -80,8 +80,6 @@ export function hideDetail() {
   }
 }
 
-// Save Scroll Position ???
-
 // Change Orientation
 export function setLayout(e) {
   let layoutObj = e.nativeEvent.layout

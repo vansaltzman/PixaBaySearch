@@ -1,5 +1,5 @@
-import React, {Component} from 'react';
-import { SearchBar } from 'react-native-elements'
+import React, { Component } from 'react';
+import { SearchBar } from 'react-native-elements';
 
 export default class SearchContainer extends Component {
   constructor(props) {
@@ -11,20 +11,20 @@ export default class SearchContainer extends Component {
   }
 
   updateInput(text) {
-    this.setState({input: text})
+    this.setState({input: text}) // Locally controlled input
   }
 
   render() { 
     return ( 
       <SearchBar 
-        placeholder={this.props.keyword || "Search By Keyword"}
         value={this.state.input}
+        onChangeText={this.updateInput}
+        onSubmitEditing={()=> this.props.searchHandler(this.state.input)}
+        placeholder={this.props.keyword || "Search By Keyword"}
         showLoadingIcon={this.props.loading}
         lightTheme
-        onChangeText={this.updateInput}
         searchIcon={{ size: 24 }}
         returnKeyType='go'
-        onSubmitEditing={()=> this.props.searchHandler(this.state.input)}
         clearButtonMode="while-editing"
       />
      )

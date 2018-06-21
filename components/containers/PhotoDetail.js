@@ -8,6 +8,7 @@ class PhotoDetail extends Component {
   constructor(props) {
     super(props);
   }
+
   render() { 
     const {largeImageURL, user, imageHeight, imageWidth, tags} = this.props.selectedPhoto
 
@@ -15,6 +16,10 @@ class PhotoDetail extends Component {
       <Card
         containerStyle={{height: this.props.layout.height * 0.9}}
         image={{uri: largeImageURL}}
+        imageProps={{
+          defaultSource: require('../../utilities/loading-small.gif'),
+          loadingIndicatorSource: require('../../utilities/loading-small.gif')
+        }}
         title={`uploaded by user ${user}`}
       >
          <Text h5 style={{textAlign: 'center'}}> {`${imageHeight} x ${imageWidth}`} </Text>

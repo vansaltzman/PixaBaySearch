@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import * as actions from '../../actions/actions';
-import { FlatList, Text, View, Image, StyleSheet, Dimensions } from 'react-native';
-import { List, Tile, ActivityIndicator } from 'react-native-elements';
 import { throttle } from 'lodash'
+import * as actions from '../../actions/actions';
+import { FlatList, Text, View, StyleSheet } from 'react-native';
+
 import PhotoListItem from '../PhotoListItem'
 import Search from './Search';
 
@@ -14,9 +14,8 @@ class PhotoListContainer extends Component {
     this.navigateToDetails = this.navigateToDetails.bind(this)
   }
 
-  navigateToDetails(photoObj) {
+  navigateToDetails(photoObj) { // There is a better way to do this by connecting nav to Redux, but did not implement in time.
     this.props.showDetail(photoObj)
-    console.log('this.props.navigation ------> ', this.props.navigation)
     this.props.navigation.navigate('PhotoDetail')
   }
 
