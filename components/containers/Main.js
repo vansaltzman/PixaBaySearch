@@ -7,25 +7,17 @@ import PhotoListContainer from '../containers/PhotoList';
 import PhotoDetail from '../containers/PhotoDetail';
 import { createStackNavigator } from 'react-navigation';
 
-export const Main = createStackNavigator(
-  { Search: PhotoListContainer,
-    PhotoDetail: PhotoDetail,
+export default createStackNavigator(
+  { Search: {screen: PhotoListContainer, 
+    navigationOptions: ({ navigation }) => ({
+    title: 'Search',
+  }),},
+    PhotoDetail: {screen: PhotoDetail,
+    navigationOptions: ({ navigation }) => ({
+      title: `Details`,
+    }),},
   },
   {
   initialRouteName: 'Search',
   }
 )
-
-function mapStateToProps(state) {
-  return {
-    list: state.list,
-    keyword: state.list.keyword,
-    selectedPhoto: state.list.selectedPhoto
-  }
-}
-
-function matchDispatchToProps(dispatch) {
-  return bindActionCreators(actions, dispatch);
-}
-
-export default connect(mapStateToProps, matchDispatchToProps)(Main);

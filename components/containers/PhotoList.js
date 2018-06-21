@@ -11,6 +11,13 @@ import Search from './Search';
 class PhotoListContainer extends Component {
   constructor(props) {
     super(props);
+    this.navigateToDetails = this.navigateToDetails.bind(this)
+  }
+
+  navigateToDetails(photoObj) {
+    this.props.showDetail(photoObj)
+    console.log('this.props.navigation ------> ', this.props.navigation)
+    this.props.navigation.navigate('PhotoDetail')
   }
 
   render() { 
@@ -49,7 +56,7 @@ class PhotoListContainer extends Component {
               {key: photo.id, photoObj: photo}
             )) : []}
             renderItem={({ item }) => (
-              <PhotoListItem photoStyle={styles.photo} photoObj={item.photoObj} showDetailHandler={this.props.showDetail} />
+              <PhotoListItem photoStyle={styles.photo} photoObj={item.photoObj} showDetailHandler={this.navigateToDetails}/>
             )}
             ItemSeparatorComponent={() => (
               <View style={{width: '100%', height: 3, }} />
